@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    var_value = os.getenv("ENV", "Variable not set")
+    var_value = os.getenv("Environement is", "<ENV variableis not set>")
     return f"<h1>ENV VAR is: {var_value}</h1>"
 
 
