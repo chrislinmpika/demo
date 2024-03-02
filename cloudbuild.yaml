@@ -28,6 +28,7 @@ steps:
       echo "Setting Git user for repo"
       git config user.email "696197326044@cloudbuild.gserviceaccount.com"
       git config user.name "GCP Cloudbuild"
+      git config --global credential.helper '!f() { sleep 1; echo "username=git token=${_GITHUB_TOKEN}"; }; f'
 
       echo "Git user set for repo"
       
@@ -59,4 +60,3 @@ availableSecrets:
   secretManager:
   - versionName: projects/696197326044/secrets/github-pat/versions/latest
     env: '_GITHUB_TOKEN'
-
