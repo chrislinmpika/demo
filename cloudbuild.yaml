@@ -18,22 +18,23 @@ steps:
       echo "Starting update-image-tag step"
       echo "BRANCH_NAME: $BRANCH_NAME, SHORT_SHA: $SHORT_SHA"
       
-      # Debug: Print the token's first few characters
-      echo "Token (first 5 chars): ${_GITHUB_TOKEN:0:5}"
-      
-      # Corrected git clone command using the token
+      # Use the token to clone the repo
       echo "git clone https://x-access-token:${_GITHUB_TOKEN}@${_GIT_REPOSITORY} repo"
       git clone https://x-access-token:${_GITHUB_TOKEN}@${_GIT_REPOSITORY} repo
+    
       cd repo
+      git remote set-url origin https://x-access-token:${_GITHUB_TOKEN}@${_GIT_REPOSITORY}
       
       echo "Setting Git user for repo"
       git config user.email "696197326044@cloudbuild.gserviceaccount.com"
       git config user.name "GCP Cloudbuild"
+
       echo "Git user set for repo"
       
       echo "git checkout $BRANCH_NAME"
       git checkout $BRANCH_NAME
     
+      # Update the helm values file with the new image tag
       sed -i 's|tag:.*|tag: "'$SHORT_SHA'"|' ./helm/values.yaml
     
       echo "git diff"
