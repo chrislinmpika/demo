@@ -15,18 +15,18 @@ steps:
   args:
   - '-c'
   - |
-      ls -l
       echo "Starting update-image-tag step"
       echo "BRANCH_NAME: $BRANCH_NAME, SHORT_SHA: $SHORT_SHA"
       
-      git config user.email "696197326044@cloudbuild.gserviceaccount.com"
-      git config user.name "GCP Cloudbuild"
-      
-      echo "Git user set"
-    
       echo "git clone $_GIT_REPOSITORY repo"
       git clone $_GIT_REPOSITORY repo
       cd repo
+      
+      echo "Setting Git user for repo"
+      git config user.email "696197326044@cloudbuild.gserviceaccount.com"
+      git config user.name "GCP Cloudbuild"
+
+      echo "Git user set for repo"
       
       echo "git checkout $BRANCH_NAME"
       git checkout $BRANCH_NAME
@@ -36,9 +36,8 @@ steps:
       echo "git diff"
       git diff
       
-      echo "git diff --quiet && git diff --staged --quiet || (git add helm/values.yaml && git commit -m "Update image tag to $_SHORT_SHA" && git push origin HEAD:$_BRANCH_NAME)"
-      git diff --quiet && git diff --staged --quiet || (git add helm/values.yaml && git commit -m "Update image tag to $_SHORT_SHA" && git push origin HEAD:$_BRANCH_NAME)
-
+      echo "Attempting git commit and push"
+      git diff --quiet && git diff --staged --quiet || (git add helm/values.yaml && git commit -m "Update image tag to $SHORT_SHA" && git push origin HEAD:$BRANCH_NAME)
   env:
   - 'SHORT_SHA=$_SHORT_SHA'
   - 'BRANCH_NAME=$_BRANCH_NAME'
