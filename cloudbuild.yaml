@@ -19,25 +19,18 @@ steps:
       echo "BRANCH_NAME: $BRANCH_NAME, SHORT_SHA: $SHORT_SHA"
       
       # Use the token to clone the repo
-      echo "git clone https://x-access-token:${_GITHUB_TOKEN}@${_GIT_REPOSITORY} repo"
-      git clone https://x-access-token:${_GITHUB_TOKEN}@${_GIT_REPOSITORY} repo
-    
+      echo "git clone ${_GIT_REPOSITORY} repo"
+      git clone ${_GIT_REPOSITORY} repo
       cd repo
       
       echo "Setting Git user for repo"
-      git config user.email "696197326044@cloudbuild.gserviceaccount.com"
       git config --global credential.helper '!f() { sleep 1; echo "username=git token=${_GITHUB_TOKEN}"; }; f'
-
-      echo "Git user set for repo"
       
       echo "git checkout $BRANCH_NAME"
       git checkout $BRANCH_NAME
     
       # Update the helm values file with the new image tag
       sed -i 's|tag:.*|tag: "'$SHORT_SHA'"|' ./helm/values.yaml
-    
-      echo "git diff"
-      git diff
       
       echo "Attempting git commit and push"
       git diff --quiet && git diff --staged --quiet || (git add helm/values.yaml && git commit -m "Update image tag to $SHORT_SHA" && git push origin HEAD:$BRANCH_NAME)
@@ -51,7 +44,7 @@ images:
 
 substitutions:
   _FULL_BUILD_NAME: 'europe-west4-docker.pkg.dev/kiro-ops-staging/kiro-ops-staging-docker-repository/demo'
-  _GIT_REPOSITORY: 'github.com/chrislinmpika/demo.git'
+  _GIT_REPOSITORY: 'https://github.com/chrislinmpika/demo.git'
   _GITHUB_TOKEN: ''
 
 availableSecrets:
