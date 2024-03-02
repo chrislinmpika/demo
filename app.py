@@ -6,8 +6,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    var_value = os.getenv("Environement is", "<ENV variableis not set>")
-    return f"<h1>ENV VAR is: {var_value}</h1>"
+    var_value = os.getenv("ENV", "<ENV is not set>")
+    return f"<h1> Environment: {var_value}</h1>"
 
 
 if __name__ == "__main__":
