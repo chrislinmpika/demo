@@ -24,6 +24,7 @@ steps:
       cd repo
       
       echo "Setting Git user for repo"
+      git config user.email "696197326044@cloudbuild.gserviceaccount.com"
       git config --global credential.helper '!f() { sleep 1; echo "username=git token=${_GITHUB_TOKEN}"; }; f'
       
       echo "git checkout $BRANCH_NAME"
@@ -31,6 +32,9 @@ steps:
     
       # Update the helm values file with the new image tag
       sed -i 's|tag:.*|tag: "'$SHORT_SHA'"|' ./helm/values.yaml
+    
+      echo "git diff"
+      git diff
       
       echo "Attempting git commit and push"
       git diff --quiet && git diff --staged --quiet || (git add helm/values.yaml && git commit -m "Update image tag to $SHORT_SHA" && git push origin HEAD:$BRANCH_NAME)
