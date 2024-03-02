@@ -23,7 +23,8 @@ steps:
       git config user.name "Cloud Build"
       
       echo "Git user set"
-
+      git clone $_GIT_REPOSITORY
+      git checkout $BRANCH_NAME
       sed -i '' 's|tag:.*|tag: "'${SHORT_SHA}'"|' helm/values.yaml
       echo "sed command executed"
       git diff
