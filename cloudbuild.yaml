@@ -23,7 +23,7 @@ steps:
       
       echo "Git user set"
 
-      sed -i 's|tag:.*|tag: "'$_SHORT_SHA'"|' helm/values.yaml
+      sed -i '' 's|tag:.*|tag: "'${SHORT_SHA}'"|' helm/values.yaml
       echo "sed command executed"
       
       git diff --quiet && git diff --staged --quiet || (git add helm/values.yaml && git commit -m "Update image tag to $_SHORT_SHA" && git push origin HEAD:$_BRANCH_NAME)
