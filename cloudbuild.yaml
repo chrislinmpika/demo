@@ -8,34 +8,27 @@ steps:
   - '.'
   waitFor: ['-']
 
-- id: 'clone-repo'
-  name: 'gcr.io/cloud-builders/git'
-  args:
-  - 'clone'
-  - '$_GIT_REPOSITORY'
-  - '.'
-  waitFor:
-  - 'build-container'
-
 - id: 'update-image-tag'
   name: 'alpine'
   entrypoint: '/bin/sh'
   args:
   - '-c'
   - |
-      if [ "$BRANCH_NAME" != "master" ] && [ "$BRANCH_NAME" != "develop" ]; then
-        sed -i '' 's|tag:.*|tag: "'${SHORT_SHA}'"|' helm/values.yaml
-        git config --global user.name "Cloudbuild"
-        git add helm/values.yaml
-        git commit -m "Update image tag to ${SHORT_SHA}"
-        git push origin $BRANCH_NAME
-      else
-        echo "Skipping update for branch $BRANCH_NAME"
+      # Ensure git is configured with user details for commit
+      git config --global user.name "Cloudbuild"
+
+      # Update the image tag in helm/values.yaml
+      sed -i '' 's|tag:.*|tag: "'${SHORT_SHA}'"|' helm/values.yaml
+      
+      # Commit and push the changes
+      git add helm/values.yaml
+      git commit -m "Update image tag to $_SHORT_SHA"
+      git push origin HEAD:$_BRANCH_NAME
   env:
   - 'SHORT_SHA=$_SHORT_SHA'
   - 'BRANCH_NAME=$_BRANCH_NAME'
   waitFor:
-  - 'clone-repo'
+  - 'build-container'
 
 images:
 - '$_FULL_BUILD_NAME:$_TAG_PREFIX$SHORT_SHA'
@@ -43,4 +36,3 @@ images:
 substitutions:
   _FULL_BUILD_NAME: 'europe-west4-docker.pkg.dev/kiro-ops-staging/kiro-ops-staging-docker-repository/demo'
   _GIT_REPOSITORY: 'https://github.com/chrislinmpika/demo.git'
-
