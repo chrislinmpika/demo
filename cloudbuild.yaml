@@ -43,3 +43,4 @@ images:
 substitutions:
   _FULL_BUILD_NAME: 'europe-west4-docker.pkg.dev/kiro-ops-staging/kiro-ops-staging-docker-repository/demo'
   _GIT_REPOSITORY: 'https://github.com/chrislinmpika/demo.git'
+
