@@ -18,14 +18,19 @@ steps:
       echo "Starting update-image-tag step"
       echo "BRANCH_NAME: $BRANCH_NAME, SHORT_SHA: $SHORT_SHA"
       
-      # Use the token to clone the repo
+      # Configure Git to use the token for authentication
+      git config --global credential.helper 'store --file=/tmp/git-credentials'
+      
+      # Store the GitHub token in the credentials file
+      echo "https://$$_GITHUB_TOKEN:x-oauth-basic@github.com" > /tmp/git-credentials
+      
+      # Clone the repo using the configured credentials
       echo "git clone ${_GIT_REPOSITORY} repo"
       git clone ${_GIT_REPOSITORY} repo
       cd repo
       
       echo "Setting Git user for repo"
       git config user.email "696197326044@cloudbuild.gserviceaccount.com"
-      git config --global credential.helper '!f() { sleep 1; echo "username=git token=$$_GITHUB_TOKEN"; }; f'
       
       echo "git checkout $BRANCH_NAME"
       git checkout $BRANCH_NAME
@@ -49,7 +54,6 @@ images:
 substitutions:
   _FULL_BUILD_NAME: 'europe-west4-docker.pkg.dev/kiro-ops-staging/kiro-ops-staging-docker-repository/demo'
   _GIT_REPOSITORY: 'https://github.com/chrislinmpika/demo.git'
-  _GITHUB_TOKEN: ''
 
 availableSecrets:
   secretManager:
