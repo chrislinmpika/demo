@@ -17,13 +17,7 @@ steps:
   args:
   - '-c'
   - |
-      git config user.email "you@example.com"   # Use a valid email address
-      git config user.name "Cloud Build"         # Set a user name
-
-      # Update the image tag in helm/values.yaml
-      sed -i 's|tag:.*|tag: "'$_SHORT_SHA'"|' helm/values.yaml
-      
-      # Commit and push the changes if there are any
+      sed -i 's|tag:.*|tag: "'$_SHORT_SHA'"|' helm/values.yaml 
       git diff --quiet && git diff --staged --quiet || (git add helm/values.yaml && git commit -m "Update image tag to $_SHORT_SHA" && git push origin HEAD:$_BRANCH_NAME)
   env:
   - 'SHORT_SHA=$_SHORT_SHA'
