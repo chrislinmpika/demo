@@ -9,21 +9,30 @@ steps:
   - '.'
   waitFor: ['-']
 
-# Step 2: Update the image tag in helm/values.yaml
-# This step now directly works on the checked-out code, no need to clone again
 - id: 'update-image-tag'
   name: 'gcr.io/cloud-builders/git'
-  entrypoint: 'bash'
+  entrypoint: '/bin/sh'
   args:
   - '-c'
   - |
-      sed -i 's|tag:.*|tag: "'$_SHORT_SHA'"|' helm/values.yaml 
+      echo "Starting update-image-tag step"
+      echo "BRANCH_NAME: $BRANCH_NAME, SHORT_SHA: $SHORT_SHA"
+      
+      git config user.email "you@example.com"
+      git config user.name "Cloud Build"
+      
+      echo "Git user set"
+
+      sed -i 's|tag:.*|tag: "'$_SHORT_SHA'"|' helm/values.yaml
+      echo "sed command executed"
+      
       git diff --quiet && git diff --staged --quiet || (git add helm/values.yaml && git commit -m "Update image tag to $_SHORT_SHA" && git push origin HEAD:$_BRANCH_NAME)
+      echo "Git operations attempted"
+
   env:
   - 'SHORT_SHA=$_SHORT_SHA'
   - 'BRANCH_NAME=$_BRANCH_NAME'
-  waitFor:
-  - 'build-container'
+
 
 images:
 - '$_FULL_BUILD_NAME:$_TAG_PREFIX$SHORT_SHA'
