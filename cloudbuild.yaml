@@ -31,7 +31,7 @@ steps:
       echo "git checkout $BRANCH_NAME"
       git checkout $BRANCH_NAME
     
-      sed -i '' 's|tag:.*|tag: "'${SHORT_SHA}'"|' ./helm/values.yaml
+      sed -i 's|tag:.*|tag: "'$SHORT_SHA'"|' ./helm/values.yaml
     
       echo "git diff"
       git diff
