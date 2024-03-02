@@ -23,11 +23,9 @@ steps:
       git clone https://x-access-token:${_GITHUB_TOKEN}@${_GIT_REPOSITORY} repo
     
       cd repo
-      git remote set-url origin https://x-access-token:${_GITHUB_TOKEN}@${_GIT_REPOSITORY}
       
       echo "Setting Git user for repo"
       git config user.email "696197326044@cloudbuild.gserviceaccount.com"
-      git config user.name "GCP Cloudbuild"
       git config --global credential.helper '!f() { sleep 1; echo "username=git token=${_GITHUB_TOKEN}"; }; f'
 
       echo "Git user set for repo"
