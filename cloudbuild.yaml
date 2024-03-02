@@ -19,8 +19,8 @@ steps:
       echo "Starting update-image-tag step"
       echo "BRANCH_NAME: $BRANCH_NAME, SHORT_SHA: $SHORT_SHA"
       
-      git config user.email "you@example.com"
-      git config user.name "Cloud Build"
+      git config user.email "696197326044@cloudbuild.gserviceaccount.com"
+      git config user.name "GCP Cloudbuild"
       
       echo "Git user set"
     
