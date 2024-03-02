@@ -17,7 +17,7 @@ steps:
   - |
       echo "Starting update-image-tag step"
       echo "BRANCH_NAME: $BRANCH_NAME, SHORT_SHA: $SHORT_SHA"
-      
+      echo "${_GIT_REPOSITORY}"
       # Use the token to clone the repo
       echo "git clone ${_GIT_REPOSITORY} repo"
       git clone ${_GIT_REPOSITORY} repo
@@ -49,6 +49,7 @@ images:
 substitutions:
   _FULL_BUILD_NAME: 'europe-west4-docker.pkg.dev/kiro-ops-staging/kiro-ops-staging-docker-repository/demo'
   _GIT_REPOSITORY: 'https://github.com/chrislinmpika/demo.git'
+  _GITHUB_TOKEN: 'test'
 
 availableSecrets:
   secretManager:
