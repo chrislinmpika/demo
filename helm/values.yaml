@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: europe-west4-docker.pkg.dev/kiro-ops-staging/kiro-ops-staging-docker-repository/demo
   pullPolicy: IfNotPresent
-  tag: "4c23c09"
+  tag: "d5d0ce8"
 
 service:
   type: ClusterIP
