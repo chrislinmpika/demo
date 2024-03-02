@@ -1,0 +1,9 @@
+steps:
+- id: 'build-container'
+  name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', '$_FULL_BUILD_NAME:$_TAG_PREFIX$SHORT_SHA', '.']
+
+images: ['$_FULL_BUILD_NAME:$_TAG_PREFIX$SHORT_SHA']
+
+substitutions:
+    _FULL_BUILD_NAME: europe-west4-docker.pkg.dev/kiro-ops-staging/kiro-ops-staging-docker-repository/demo

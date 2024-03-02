@@ -1,0 +1,12 @@
+replicaCount: 1
+
+image:
+  repository: europe-west4-docker.pkg.dev/kiro-ops-staging/kiro-ops-staging-docker-repository/demo
+  pullPolicy: IfNotPresent
+  tag: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+env: ""
