@@ -19,7 +19,8 @@ steps:
       echo "BRANCH_NAME: $BRANCH_NAME, SHORT_SHA: $SHORT_SHA"
       
       # Use the token to clone the repo
-      git clone https://x-access-token:${_GITHUB_TOKEN}@${_GIT_REPOSITORY#'https://'} repo
+      echo "git clone https://x-access-token:${_GITHUB_TOKEN}@${_GIT_REPOSITORY} repo"
+      git clone https://x-access-token:${_GITHUB_TOKEN}@${_GIT_REPOSITORY} repo
       cd repo
       
       echo "Setting Git user for repo"
@@ -49,7 +50,7 @@ images:
 
 substitutions:
   _FULL_BUILD_NAME: 'europe-west4-docker.pkg.dev/kiro-ops-staging/kiro-ops-staging-docker-repository/demo'
-  _GIT_REPOSITORY: 'https://github.com/chrislinmpika/demo.git'
+  _GIT_REPOSITORY: 'github.com/chrislinmpika/demo.git'
   _GITHUB_TOKEN: ''
 
 availableSecrets:
