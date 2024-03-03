@@ -37,6 +37,7 @@ steps:
 
       echo "Setting Git user for repo"
       git config user.email "696197326044@cloudbuild.gserviceaccount.com"
+      git config user.name "cloudbuild"
 
       echo "git checkout $BRANCH_NAME"
       git checkout $BRANCH_NAME
