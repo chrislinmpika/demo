@@ -8,7 +8,7 @@ app = Flask(__name__)
 def hello():
     var_value = os.getenv("ENV", "<ENV is not set>").capitalize()
     emoji = "🚀"
-    return f"<h1>{emoji} Env is {var_value}.</h1>"
+    return f"<h1>{emoji} Env is : {var_value}</h1>"
 
 
 if __name__ == "__main__":
