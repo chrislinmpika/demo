@@ -9,14 +9,20 @@ steps:
   - '.'
   waitFor: ['-']
 
-- id: 'update-image-tag'
+- id: 'git-write-back'
   name: 'gcr.io/cloud-builders/git'
   entrypoint: '/bin/sh'
   args:
   - '-c'
   - |
-      echo "Starting update-image-tag step"
+      echo "Starting git-write-back step"
       echo "BRANCH_NAME: $BRANCH_NAME, SHORT_SHA: $SHORT_SHA"
+
+      # Exit if the branch is master or develop
+      if [ "$BRANCH_NAME" = "master" ] ; then
+          echo "Branch is $BRANCH_NAME, skipping update-image-tag step._"
+          exit 0
+      fi
 
       # Configure Git to use the token for authentication
       git config --global credential.helper 'store --file=/tmp/git-credentials'
@@ -31,6 +37,7 @@ steps:
 
       echo "Setting Git user for repo"
       git config user.email "696197326044@cloudbuild.gserviceaccount.com"
+      git config user.name "cloudbuild"
 
       echo "git checkout $BRANCH_NAME"
       git checkout $BRANCH_NAME
