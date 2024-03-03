@@ -5,7 +5,6 @@ image:
   pullPolicy: IfNotPresent
   tag: "03c1fd5"
 
-
 service:
   type: ClusterIP
   port: 80
