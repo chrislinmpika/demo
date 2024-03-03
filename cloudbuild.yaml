@@ -9,18 +9,18 @@ steps:
   - '.'
   waitFor: ['-']
 
-- id: 'update-image-tag'
+- id: 'git-write-back'
   name: 'gcr.io/cloud-builders/git'
   entrypoint: '/bin/sh'
   args:
   - '-c'
   - |
-      echo "Starting update-image-tag step"
+      echo "Starting git-write-back step"
       echo "BRANCH_NAME: $BRANCH_NAME, SHORT_SHA: $SHORT_SHA"
 
       # Exit if the branch is master or develop
       if [ "$BRANCH_NAME" = "master" ] || [ "$BRANCH_NAME" = "develop" ]; then
-          echo "Branch is master or develop, skipping update-image-tag step."
+          echo "Branch is $BRANCH_NAME, skipping update-image-tag step._"
           exit 0
       fi
 
