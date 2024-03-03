@@ -3,11 +3,15 @@ import os
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def hello():
     # Get the environment variable and capitalize it
     var_value = os.getenv("ENV", "<ENV is not set>").capitalize()
-    return f"<h1>Environment: {var_value}</h1>"
+    # Add an emoji to the message
+    emoji = "🚀"  # Rocket emoji as an example
+    return f"<h1>Environment: {var_value} {emoji}</h1>"
+
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=80)
