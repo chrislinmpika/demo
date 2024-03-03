@@ -36,7 +36,7 @@ steps:
       git checkout $BRANCH_NAME
 
       # Update the helm values file with the new image tag
-      sed -i 's|tag:.*|tag: "'$SHORT_SHA'"|' ./helm/values.yaml
+      sed -i 's|tag:.*|tag: "'$_TAG_PREFIX$SHORT_SHA'"|' ./helm/values.yaml
 
       echo "git diff"
       git diff
