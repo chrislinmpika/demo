@@ -1,0 +1,8 @@
+helm:
+  parameters:
+  - name: image.tag
+    value: master-c4b316e
+    forcestring: true
+  - name: image.name
+    value: europe-west4-docker.pkg.dev/kiro-ops-staging/kiro-ops-staging-docker-repository/demo
+    forcestring: true
