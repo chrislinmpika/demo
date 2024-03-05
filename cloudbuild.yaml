@@ -1,5 +1,4 @@
 steps:
-# Step 1: Build the Docker image
 - id: 'build-container'
   name: 'gcr.io/cloud-builders/docker'
   args:
@@ -8,6 +7,13 @@ steps:
   - '$_FULL_BUILD_NAME:$_TAG_PREFIX$SHORT_SHA'
   - '.'
   waitFor: ['-']
+
+- id: 'tests'
+  name: 'gcr.io/cloud-builders/docker'
+  entrypoint: '/bin/sh'
+  args:
+  - 'echo "run tests here'
+  waitFor: ['build-container']
 
 - id: 'git-write-back'
   name: 'gcr.io/cloud-builders/git'
@@ -19,9 +25,9 @@ steps:
       echo "BRANCH_NAME: $BRANCH_NAME, SHORT_SHA: $SHORT_SHA"
 
       # Exit if the branch is master or develop
-      if [ "$BRANCH_NAME" = "master" ] ; then
-          echo "Branch is $BRANCH_NAME, skipping update-image-tag step._"
-          exit 0
+      if [ "$BRANCH_NAME" = "master" ] | [ "$BRANCH_NAME" = "develop" ] ; then
+          echo "Branch is $BRANCH_NAME, skipping update-image-tag step."
+          exit
       fi
 
       # Configure Git to use the token for authentication
