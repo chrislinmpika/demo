@@ -20,7 +20,7 @@ steps:
       # Exit if the branch is master or develop
       if [ "$BRANCH_NAME" = "master" ] | [ "$BRANCH_NAME" = "develop" ] ; then
           echo "Branch is $BRANCH_NAME, skipping update-image-tag step."
-          exit
+          exit 0
       fi
 
       # Configure Git to use the token for authentication
