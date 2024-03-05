@@ -8,13 +8,6 @@ steps:
   - '.'
   waitFor: ['-']
 
-- id: 'tests'
-  name: 'gcr.io/cloud-builders/docker'
-  entrypoint: '/bin/sh'
-  args:
-  - 'echo "run tests here'
-  waitFor: ['build-container']
-
 - id: 'git-write-back'
   name: 'gcr.io/cloud-builders/git'
   entrypoint: '/bin/sh'
