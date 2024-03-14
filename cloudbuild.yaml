@@ -20,3 +20,4 @@ availableSecrets:
   secretManager:
   - versionName: projects/696197326044/secrets/github-pat/versions/latest
     env: '_GITHUB_TOKEN'
+
