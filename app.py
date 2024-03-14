@@ -7,8 +7,8 @@ app = Flask(__name__)
 @app.route("/")
 def hello():
     var_value = os.getenv("ENV", "<ENV is not set>").capitalize()
-    emoji = "🚀🚀🚀"
-    return f"<h1>{emoji} Env is : {var_value}</h1>"
+    emoji = "🚀🚀"
+    return f"<h1>{emoji} Env - {var_value}</h1>"
 
 
 if __name__ == "__main__":
