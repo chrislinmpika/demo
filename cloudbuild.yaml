@@ -16,8 +16,3 @@ substitutions:
   _FULL_BUILD_NAME: 'europe-west4-docker.pkg.dev/kiro-ops-staging/kiro-ops-staging-docker-repository/demo'
   _GIT_REPOSITORY: 'https://github.com/chrislinmpika/demo.git'
 
-availableSecrets:
-  secretManager:
-  - versionName: projects/696197326044/secrets/github-pat/versions/latest
-    env: '_GITHUB_TOKEN'
-
