@@ -1,0 +1,71 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: demo-application-set
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - name: demo-prod
+            values: values/values-prod.yaml
+            project: prod
+            env: prod
+            imageList: demo_master=europe-west4-docker.pkg.dev/kiro-ops-staging/kiro-ops-staging-docker-repository/demo:master-*
+            allowTags: "regexp:^master-.*$"
+            updateStrategy: latest
+            targetRevision: master
+            namespace: demo-prod
+            syncEnabled: "false"
+            imageTag: master-$ARGOCD_APP_REVISION_SHORT
+          - name: demo-staging
+            values: values/values-staging.yaml
+            project: staging
+            targetRevision: develop
+            namespace: demo-staging
+            syncEnabled: "false"
+            imageTag: develop-$ARGOCD_APP_REVISION_SHORT
+            env: staging
+          - name: demo-dev1
+            values: values/values-staging.yaml
+            project: dev
+            targetRevision: develop
+            env: dev1
+            namespace: demo-dev1
+            syncEnabled: "true"
+            imageTag: $ARGOCD_APP_REVISION_SHORT
+          - name: demo-dev2
+            values: values/values-staging.yaml
+            project: dev
+            targetRevision: develop
+            env: dev2
+            namespace: demo-dev2
+            syncEnabled: "true"
+            imageTag: $ARGOCD_APP_REVISION_SHORT
+  template:
+    metadata:
+      name: '{{name}}'
+    spec:
+      project: '{{project}}'
+      source:
+        repoURL: 'https://github.com/chrislinmpika/demo.git'
+        targetRevision: '{{targetRevision}}'
+        path: helm
+        helm:
+          valueFiles:
+            - '{{values}}'
+          parameters:
+            - name: env
+              value: '{{env}}'
+            - name: image.tag
+              value: '{{imageTag}}'
+      destination:
+        server: https://europe-west4-connectgateway.googleapis.com/v1/projects/696197326044/locations/europe-west4/gkeMemberships/kiro-gke-eu-west4-ops-staging
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
+          allowEmpty: true
+        syncOptions:
+          - CreateNamespace=true
