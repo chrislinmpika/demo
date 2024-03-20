@@ -11,6 +11,12 @@ spec:
   maxReplicas: 10
   metrics:
   - external:
-      metricName: pubsub.googleapis.com|subscription|num_undelivered_messages-sub
-      targetValue: "10"
+      metric:
+       name: pubsub.googleapis.com|subscription|num_undelivered_messages-sub
+       selector:
+         matchLabels:
+           resource.labels.subscription_id: echo-read
+      target:
+        type: AverageValue
+        averageValue: 10
     type: External
