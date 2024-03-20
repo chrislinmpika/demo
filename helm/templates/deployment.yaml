@@ -1,22 +1,49 @@
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: {{ .Release.Name }}
+#spec:
+#  replicas: {{ .Values.replicaCount }}
+#  selector:
+#    matchLabels:
+#      app: {{ .Release.Name }}
+#  template:
+#    metadata:
+#      labels:
+#        app: {{ .Release.Name }}
+#    spec:
+#      containers:
+#      - name: demo
+#        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+#        ports:
+#        - containerPort: 8080
+#        env:
+#        - name: ENV
+#          value: {{ .Values.env | default "default" }}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name: pubsub
 spec:
-  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: pubsub
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
+        app: pubsub
     spec:
+      volumes:
+      - name: google-cloud-key
+        secret:
+          secretName: pubsub-key
       containers:
-      - name: demo
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        ports:
-        - containerPort: 8080
+      - name: subscriber
+        image: us-docker.pkg.dev/google-samples/containers/gke/pubsub-sample:v2
+        volumeMounts:
+        - name: google-cloud-key
+          mountPath: /var/secrets/google
         env:
-        - name: ENV
-          value: {{ .Values.env | default "default" }}
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/secrets/google/key.json

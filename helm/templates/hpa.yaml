@@ -12,7 +12,7 @@ spec:
   metrics:
   - external:
       metric:
-       name: pubsub.googleapis.com|subscription|num_undelivered_messages-sub
+       name: pubsub.googleapis.com|topic|num_undelivered_messages
       target:
         type: AverageValue
         averageValue: 10
